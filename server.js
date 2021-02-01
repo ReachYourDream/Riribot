@@ -22,10 +22,16 @@ client.on('message', async (message) => {
     if(commandRequired.length <= 0){
       return console.log("Couldn't find command" + command);
     }
-    commandRequired.run(client, message, args);
+    await commandRequired.run(client, message, args).catch(async err => {
+      console.log(err);
+      const embedError = new Discord.MessageEmbed()
+          .addField("I can't find command ", command)
+          .setColor('RED');
+      await message.channel.send(embedError);
+    });
   } catch (err) {
     console.log(err);
-    const embedError = Discord.MessageEmbed
+    const embedError = new Discord.MessageEmbed()
       .addField("I can't find command ", command)
       .setColor('RED');
     await message.channel.send(embedError);
