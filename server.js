@@ -4,7 +4,10 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const http = require('http');
 const express = require('express');
+
+
 const app = express();
+const prefix = process.env.PREFIX;
 
 //keep alive glitch method
 app.get("/", (request, response) => {
@@ -26,8 +29,9 @@ client.on('ready', () => {
 client.on('message', async (message) => {
   if (message.author.bot) return;
   if (!message.guild) return;
+  if (message.content.indexOf(prefix) !== 0) return;
 
-  const args = message.content.slice(1).trim().split(/ +/g);
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
   // The list of if/else is replaced with those simple 2 lines:
