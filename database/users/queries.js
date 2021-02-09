@@ -8,24 +8,24 @@ const UserModel = require('./schema');
  * @returns {Promise<*>}
  */
 module.exports.insert = async (user) => {
-    await mongoose.connect(process.env.DB_URI,{useNewUrlParser: true, useUnifiedTopology: true});
+  await mongoose.connect(process.env.DB_URI,{useNewUrlParser: true, useUnifiedTopology: true});
 
-    const User = UserModel();
+  const User = UserModel();
 
-    const newUser = new User({
-        userId: user.id,
-        name: user.name,
-        isBot: user.isBot,
-    });
+  const newUser = new User({
+    userId: user.id,
+    name: user.name,
+    isBot: user.isBot,
+  });
 
-    return newUser.save();
+  return newUser.save();
 }
 
 module.exports.find = async (query) => {
-    await mongoose.connect(process.env.DB_URI,{useNewUrlParser: true, useUnifiedTopology: true});
+  await mongoose.connect(process.env.DB_URI,{useNewUrlParser: true, useUnifiedTopology: true});
 
-    const User = UserModel();
+  const User = UserModel();
 
-    return User.find(query);
+  return User.find(query);
 
 }

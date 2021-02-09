@@ -13,6 +13,6 @@ module.exports.run = async (client, message, args) => {
       })
     }, 2000);
   });
-  // await message.channel.send('And the result is.....');
-  // await message.channel.send(coinFace);
+  // await message.guild.send('And the result is.....');
+  // await message.guild.send(coinFace);
 }
