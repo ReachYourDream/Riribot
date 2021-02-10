@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const guildModel = require('./schema');
+const guildModel = require('../schema/schema');
 
 const {
   DB_URI
@@ -28,13 +28,15 @@ module.exports.insert = (guild) => {
     return newGuild.save();
   });
 }
-
+/**
+ *
+ * @param query
+ * @returns Promise<Guild>
+ */
 module.exports.find = (query) => {
   const db = mongoose.connect(DB_URI, {useNewUrlParser: true,
     useUnifiedTopology: true,
   });
 
-  db.next(() => {
-    return guildConstructor.find(query);
-  });
+  return db.then(() => guildConstructor.find(query));
 }

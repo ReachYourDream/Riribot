@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-const guildQueries = require('../database/guild/queries');
+const guildQueries = require('../modules/guild/queries/queries');
 
 /**
  *

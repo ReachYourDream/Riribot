@@ -1,13 +1,17 @@
 'use strict';
 
+const _ = require('lodash');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const http = require('http');
 const express = require('express');
+const Bluebird = require('bluebird');
+
+const guildControllers = require('./modules/guild/controllers/index');
 
 
 const app = express();
-const prefix = process.env.PREFIX;
+const DEFAULT_PREFIX = process.env.PREFIX;
 
 //keep alive glitch method
 app.get("/", (request, response) => {
@@ -29,6 +33,10 @@ client.on('ready', () => {
 client.on('message', async (message) => {
   if (message.author.bot) return;
   if (!message.guild) return;
+  const prefixDB = await guildControllers.findById(message.guild.id).then(res => !_.isNull(res) ? res.prefix : null);
+  console.log('prefixDebe', prefixDB);
+  const prefix = await prefixDB || DEFAULT_PREFIX;
+  console.log('prefix', prefix);
   if (message.content.indexOf(prefix) !== 0) return;
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
