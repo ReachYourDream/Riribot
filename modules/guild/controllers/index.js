@@ -9,7 +9,7 @@ const guildQueries = require('../queries/queries');
  */
 module.exports.findById = (id) => {
   const query = {
-    guildId: id,
+  _id: id,
   };
   return guildQueries.find(query)
     .then(res => {

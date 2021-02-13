@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
  */
 module.exports = () => {
     const guildSchema = new mongoose.Schema({
-        guildId: String,
+        _id : String,
         name: String,
         description: String,
         prefix: String,

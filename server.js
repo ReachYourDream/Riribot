@@ -33,10 +33,8 @@ client.on('ready', () => {
 client.on('message', async (message) => {
   if (message.author.bot) return;
   if (!message.guild) return;
-  const prefixDB = await guildControllers.findById(message.guild.id).then(res => !_.isNull(res) ? res.prefix : null);
-  console.log('prefixDebe', prefixDB);
-  const prefix = await prefixDB || DEFAULT_PREFIX;
-  console.log('prefix', prefix);
+  const prefixDB = await guildControllers.findById(message.guild.id);
+  const prefix = prefixDB[0].prefix || DEFAULT_PREFIX;
   if (message.content.indexOf(prefix) !== 0) return;
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
