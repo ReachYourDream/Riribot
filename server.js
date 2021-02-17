@@ -7,8 +7,8 @@ const http = require('http');
 const express = require('express');
 const Bluebird = require('bluebird');
 
+const commandList = require('./commands/index');
 const guildControllers = require('./modules/guild/controllers/index');
-
 
 const app = express();
 const DEFAULT_PREFIX = process.env.PREFIX;
@@ -23,9 +23,6 @@ setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);
 
-
-
-
 client.on('ready', () => {
   console.log(`logged in as ${client.user.tag}`);
 });
@@ -39,10 +36,12 @@ client.on('message', async (message) => {
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
+  const commandFileObject = _.find(commandList(), {'command': command});
+  const commandFile = commandFileObject ? commandFileObject.fileName : '';
 
   // The list of if/else is replaced with those simple 2 lines:
   try {
-    let commandRequired = require(`./commands/${command}.js`);
+    let commandRequired = require(`./commands/${commandFile}`);
     if(commandRequired.length <= 0){
       return console.log("Couldn't find command" + command);
     }

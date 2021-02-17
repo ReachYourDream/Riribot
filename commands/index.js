@@ -1,4 +1,4 @@
-[
+module.exports = () => [
   {
     "name": "Prefix",
     "fileName": "prefix",
@@ -18,7 +18,5 @@
     "name": "Server time",
     "fileName": "time",
     "command": "time"
-  }
-
-
-]
+  },
+];
