@@ -13,7 +13,6 @@ module.exports.findById = (id) => {
   };
   return guildQueries.find(query)
     .then(res => {
-      console.log('rez',res);
       if(res) {
         return res;
       } else {

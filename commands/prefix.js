@@ -3,6 +3,7 @@ const _ = require('lodash');
 const guildQueries = require('../modules/guild/queries/queries');
 const guildController = require('../modules/guild/controllers/index');
 
+const {DEFAULT_PREFIX} = process.env;
 /**
  *
  * @param client
@@ -15,9 +16,10 @@ module.exports.run = async (client, message, args) => {
       message.channel.send('prefix hanya boleh satu karakter');
     } else {
       const guildFound = await guildController.findById(message.guild.id);
-      if(!_.isNull(guildFound)){
+      if(!_.isNull(guildFound) && _.size(guildFound)){
         guildFound[0].prefix = args[0];
-        guildFound[0].save();
+        return guildFound[0].save()
+          .then(() => message.channel.send(`Prefix has been changed into \`${args[0]}\``));
       } else{
         const guildDetail = {
           guildId: message.guild.id,
@@ -27,12 +29,15 @@ module.exports.run = async (client, message, args) => {
         };
         guildQueries.insert(guildDetail)
           .then((resp) => {
-            message.channel.send('prefix: '
-              + JSON.stringify(resp));
+            return message.channel.send(`Prefix has been changed into \`${args[0]}\``);
           });
       }
     }
-  } else {
-    message.channel.send('prefix hanya boleh satu kata');
+  } else if(_.size(args) > 1) {
+    return message.channel.send('Prefix only allowed by one character');
+  } else if(_.size(args) === 0) {
+    const guildFound = await guildController.findById(message.guild.id);
+    const prefix =  _.get(guildFound, '[0].prefix', DEFAULT_PREFIX);
+    return message.channel.send(`Prefix for this channel is: \`${prefix}\``);
   }
 }

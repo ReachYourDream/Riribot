@@ -6,12 +6,15 @@ const client = new Discord.Client();
 const http = require('http');
 const express = require('express');
 const Bluebird = require('bluebird');
+const mongoose = require('mongoose');
 
 const commandList = require('./commands/index');
-const guildControllers = require('./modules/guild/controllers/index');
+const guildController = require('./modules/guild/controllers/index');
 
 const app = express();
 const DEFAULT_PREFIX = process.env.PREFIX;
+
+Bluebird.promisifyAll(mongoose);
 
 //keep alive glitch method
 app.get("/", (request, response) => {
@@ -30,8 +33,13 @@ client.on('ready', () => {
 client.on('message', async (message) => {
   if (message.author.bot) return;
   if (!message.guild) return;
-  const prefixDB = await guildControllers.findById(message.guild.id);
-  const prefix = prefixDB[0].prefix || DEFAULT_PREFIX;
+
+  const guildFound = await guildController.findById(message.guild.id);
+  const prefix =  _.get(guildFound, '[0].prefix', DEFAULT_PREFIX);
+
+  if(message.content ==="!prefix"){
+    return message.channel.send(`Prefix for this channel is: \`${prefix}\``);
+  }
   if (message.content.indexOf(prefix) !== 0) return;
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -43,7 +51,10 @@ client.on('message', async (message) => {
   try {
     let commandRequired = require(`./commands/${commandFile}`);
     if(commandRequired.length <= 0){
-      return console.log("Couldn't find command" + command);
+      const embedError = new Discord.MessageEmbed()
+        .addField("I can't find command ", command)
+        .setColor('RED');
+      return message.channel.send(embedError);
     }
     await commandRequired.run(client, message, args)
       .catch(async err => {
