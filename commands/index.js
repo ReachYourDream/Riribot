@@ -19,4 +19,9 @@ module.exports = () => [
     "fileName": "time",
     "command": "time"
   },
+  {
+    "name" : "Channel List",
+    fileName: "channels-list",
+    command: "channels"
+  },
 ];
