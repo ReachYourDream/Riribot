@@ -13,9 +13,17 @@
   "dependencies": {
     "bluebird": "^3.7.2",
     "discord.js": "^12.5.1",
+    "eslint": "^7.21.0",
     "express": "^4.17.1",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "mongoose": "^5.11.14"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1"
   }
 }
