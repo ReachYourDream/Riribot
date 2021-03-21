@@ -11,6 +11,7 @@ module.exports.findById = (id) => {
   const query = {
   _id: id,
   };
+  console.log('gueri', query);
   return guildQueries.find(query)
     .then(res => {
       if(res) {
@@ -19,4 +20,12 @@ module.exports.findById = (id) => {
         return null;
       }
     });
+}
+
+/**
+ *
+ * @param data
+ */
+module.exports.saveGuild = (data) => {
+  return guildQueries.insert(data);
 }

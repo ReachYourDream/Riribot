@@ -24,4 +24,9 @@ module.exports = () => [
     fileName: "channels-list",
     command: "channels",
   },
+  {
+    name: "Save Pivot and Target Channel",
+    fileName: 'savePivotAndTargetChannel',
+    command: 'savechannel'
+  },
 ];
